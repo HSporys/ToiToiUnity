@@ -1,12 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class ToiletHandler : MonoBehaviour
 {
     private List<Toilet> _toiletList = new();
-    
+    private Vector3 _selectionStart;
+    private Vector3 _selectionEnd;
+    private bool _selecting = false;
+    private bool _selected = false;
+    private GameObject _selectionArea;
+    private bool _shiftingSelection = false;
+    private Vector3 _shiftStart = Vector3.zero;
+    private List<GameObject> _shiftingToilets = new();
+
+    [SerializeField] public GameObject selectionPrefab;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -24,12 +37,118 @@ public class ToiletHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         SimulationHandler.SimultationStep(_toiletList, Time.deltaTime);
 
         Camera cam = Camera.main;
         float height = 2f * cam.orthographicSize;
         float width = height * cam.aspect;
+    }
+
+    private void Update()
+    {
+        SelectToilets();
+    }
+
+    public void AddToilet(ToiletBehaviour toilet)
+    {
+        toilet.Init();
+        _toiletList.Add(toilet.Toilet);
+    }
+
+    void SelectToilets()
+    {
+        Vector3 selectionDistance;
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            _selectionStart = CurrentPosition();
+            _selectionArea = Instantiate(selectionPrefab, _selectionStart, Quaternion.identity);
+            selectionDistance = CurrentPosition() - _selectionStart;
+            _selectionArea.transform.localScale = selectionDistance;
+            _selectionArea.transform.position += selectionDistance*0.5f;
+            _selecting = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0) && _selected)
+        {
+            if (IsInsideArea(_selectionStart,_selectionEnd,CurrentPosition()))
+            {
+                _shiftingSelection = true;
+                _shiftStart = CurrentPosition();
+
+                foreach (Transform child in transform)
+                {
+                    if (IsInsideArea(_selectionStart,_selectionEnd,child.transform.position))
+                    {
+                        _shiftingToilets.Add(child.gameObject);
+                    }
+                }
+            }
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && _shiftingSelection)
+        {
+            var shiftDirection = CurrentPosition() - _shiftStart;
+            _selectionArea.transform.position += shiftDirection;
+            foreach (GameObject toilet in _shiftingToilets)
+            {
+                toilet.transform.position += shiftDirection;
+            }
+
+            _shiftStart += shiftDirection;
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && _selecting)
+        {
+            _selectionArea.transform.position = _selectionStart;
+            _selectionArea.transform.localScale = Vector3.one;
+            selectionDistance = CurrentPosition() - _selectionStart;
+            _selectionArea.transform.localScale = selectionDistance;
+            _selectionArea.transform.position += selectionDistance*0.5f;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            _shiftingSelection = false;
+            _selectionEnd = CurrentPosition();
+            _selecting = false;
+            selectionDistance = _selectionEnd - _selectionStart;
+            if (Vector3.Magnitude(selectionDistance) > 1.0f && _selected == false)
+            {
+                _selected = true;
+            }
+            else
+            {
+                _selected = false;
+                Destroy(_selectionArea);
+                _shiftingToilets = new();
+            }
+        }
+    }
+
+    private bool IsInsideArea(Vector3 start, Vector3 end, Vector3 position)
+    {
+        Vector3 min = Vector3.Min(start,end);
+        Vector3 max = Vector3.Max(start, end);
+
+        if (position.x >max.x || position.y >max.y)
+        {
+            return false;
+        } if (position.x < min.x || position.y < min.y)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private Vector3 CurrentPosition()
+    {
+        var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        position.z = -1;
+        return position;
     }
 }

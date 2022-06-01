@@ -44,3 +44,6 @@ TagManager:
   - name: meter
     uniqueID: 2230552979
     locked: 0
+  - name: selection
+    uniqueID: 3293625689
+    locked: 0
