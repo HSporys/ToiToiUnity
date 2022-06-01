@@ -8,19 +8,22 @@ using Vector2 = System.Numerics.Vector2;
 public class ToiletBehaviour : MonoBehaviour
 {
     public Toilet Toilet;
-    private List<Toilet> _toiletList = new();
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        var position = gameObject.transform.position;
-        Toilet = new Toilet(position.x,position.y);
-        _toiletList.Add(Toilet);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        SimulationHandler.SimultationStep(_toiletList, Time.deltaTime);
-        Toilet.Tick(Time.deltaTime);
+    }
+
+    public void Init()
+    {
+        var position = gameObject.transform.position;
+        Toilet = new Toilet(position.x,position.y);
+        var meterHandler = GetComponentInChildren(typeof(MeterHandler)) as MeterHandler;
+        meterHandler.Init(Toilet);
     }
 }

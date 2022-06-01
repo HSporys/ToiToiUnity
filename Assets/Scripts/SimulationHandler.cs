@@ -7,7 +7,7 @@ namespace Assets.Scripts
     public class SimulationHandler
     {
         private const float ToiletBaseDuration = 10;
-        private const float PersonsPerSecond = 0.1f;
+        private const float PersonsPerSecond = 0.5f;
         private const float FreshWaterUsageBase = 2;
         private const float WasteWater1UsageBase = 1.9f;
         private const float WasteWater2UsageBase = 2.1f;

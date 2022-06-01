@@ -14,17 +14,6 @@ public class MeterHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var parent = GetComponentInParent(typeof(ToiletBehaviour)) as ToiletBehaviour;
-        Debug.Log(parent);
-        _toilet = parent.Toilet;
-        
-        _freshWaterMeter = gameObject.transform.Find("FreshWaterMeter");
-        _wasteMeter1 = gameObject.transform.Find("WasteMeter1");
-        _wasteMeter2 = gameObject.transform.Find("WasteMeter2");
-        _occupiedLamp = gameObject.transform.Find("OccupiedLamp").gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-
-        Debug.Log(_freshWaterMeter);
-        Debug.Log("start");
     }
 
     // Update is called once per frame
@@ -45,5 +34,18 @@ public class MeterHandler : MonoBehaviour
         {
             _occupiedLamp.color = Color.red;
         }
+    }
+
+    public void Init(Toilet toilet)
+    {
+        _toilet = toilet;
+
+        _freshWaterMeter = gameObject.transform.Find("FreshWaterMeter");
+        _wasteMeter1 = gameObject.transform.Find("WasteMeter1");
+        _wasteMeter2 = gameObject.transform.Find("WasteMeter2");
+        _occupiedLamp = gameObject.transform.Find("OccupiedLamp").gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+
+        Debug.Log(_freshWaterMeter);
+        Debug.Log("start");
     }
 }
