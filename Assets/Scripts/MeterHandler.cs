@@ -26,7 +26,7 @@ public class MeterHandler : MonoBehaviour
         meterTransform = _wasteMeter2;
         _wasteMeter2.localScale = new Vector3(meterTransform.localScale.x, _toilet.WasteWater2/ _toilet.WasteWater2Max *2,1);
 
-        if (_toilet.IsFree())
+        if (_toilet.IsAvailable())
         {
             _occupiedLamp.color = Color.green;
         }
