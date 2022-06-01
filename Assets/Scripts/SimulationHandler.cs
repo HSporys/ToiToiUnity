@@ -7,8 +7,8 @@ namespace Assets.Scripts
 {
     public class SimulationHandler
     {
-        private const float ToiletBaseDuration = 10;
-        private const float PersonsPerSecond = 0.5f;
+        private const float ToiletBaseDuration = .5f;
+        private const float PersonsPerSecond = 1f;
         private const float FreshWaterUsageBase = 2;
         private const float WasteWater1UsageBase = 1.9f;
         private const float WasteWater2UsageBase = 2.1f;
@@ -30,7 +30,7 @@ namespace Assets.Scripts
                 var bestV = float.PositiveInfinity;
                 foreach (var toilet in toilets)
                 {
-                    if (Vector2.Distance(pos, toilet.coordinates) < bestV && toilet.IsFree() && !toilet.IsFull())
+                    if (Vector2.Distance(pos, toilet.coordinates) < bestV && toilet.IsAvailable())
                     {
                         bestV = Vector2.Distance(pos, toilet.coordinates);
                         bestT = toilet;
@@ -49,22 +49,22 @@ namespace Assets.Scripts
             foreach (var toilet in toilets)
             {
                 // empty full toilets 
-                if (toilet.IsFull() && toilet.IsFree())
+                if (toilet.IsFull())
                 {
                     toilet.Empty();
                 } 
                 // update OccupiedFor
-                if (!toilet.IsFree())
+                if (toilet.OccupiedFor > 0)
                 {
                     toilet.OccupiedFor -= dt;
                     if (toilet.OccupiedFor <= 0)
                     {
                         toilet.OccupiedFor = 0;
                         toilet.FreshWater -= FreshWaterUsageBase;
-                        toilet. WasteWater1 += WasteWater1UsageBase;
+                        toilet.WasteWater1 += WasteWater1UsageBase;
                         toilet.WasteWater2 += WasteWater2UsageBase;
+                        toilet.FreshWater = toilet.FreshWater < 0 ? 0 : toilet.FreshWater;
                     }
-
                 }
             }
         }

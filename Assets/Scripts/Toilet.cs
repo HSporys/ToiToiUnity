@@ -6,6 +6,10 @@ using Vector2 = System.Numerics.Vector2;
 
 public class Toilet
 {
+    
+    private const float FreshWaterTreshhold = 0.05f;
+    private const float WasteWaterTreshhold = 0.9f;
+    
     public Vector2 coordinates;
     public float FreshWater;
     public float WasteWater1;
@@ -25,9 +29,9 @@ public class Toilet
         Empty();
     }
 
-    public bool IsFree()
+    public bool IsAvailable()
     {
-        return OccupiedFor <= 0.0f;
+        return OccupiedFor <= 0.0f && !IsFull();
     }
 
     public void Tick(float delta)
@@ -36,9 +40,9 @@ public class Toilet
 
     public bool IsFull()
     {
-        bool full =  FreshWater < 0.1 * FreshWaterMax || WasteWater1 > 0.9 * WasteWater1Max ||
-               WasteWater2 > 0.9 * WasteWater2Max;
-        //if(full) Debug.Log("FULL" + FreshWater + " " + WasteWater1 + " " + WasteWater2);
+        bool full =  FreshWater < FreshWaterTreshhold * FreshWaterMax || WasteWater1 > WasteWaterTreshhold * WasteWater1Max ||
+               WasteWater2 > WasteWaterTreshhold * WasteWater2Max;
+        if(full) Debug.Log("FULL" + FreshWater + " " + WasteWater1 + " " + WasteWater2);
         return full;
     }
 
