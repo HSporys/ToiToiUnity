@@ -32,18 +32,7 @@ public class Toilet
 
     public void Tick(float delta)
     {
-        if (!IsFree())
-        {
-            OccupiedFor -= delta;
-            if (OccupiedFor <= 0)
-            {
-                OccupiedFor = 0;
-                FreshWater -= 10;
-                WasteWater1 += 10;
-                WasteWater2 += 10;
-            }
 
-        }
 
         //Debug.Log(FreshWater);
     }
