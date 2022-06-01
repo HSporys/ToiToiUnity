@@ -14,7 +14,7 @@ namespace Assets.Scripts
             // new person based on time
             if (new Random().NextDouble() < dt)
             {
-                var bestT = toilets[0];
+                Toilet bestT = null;
                 var pos = new Vector2((float)rng.NextDouble(), (float)rng.NextDouble());
                 var bestV = float.PositiveInfinity;
                 foreach (var toilet in toilets)
@@ -25,7 +25,11 @@ namespace Assets.Scripts
                         bestT = toilet;
                     }
                 }
-                bestT.OccupiedFor = (float)(100 * rng.NextDouble());
+
+                if (bestT != null)
+                {
+                    bestT.OccupiedFor = (float)(100 * rng.NextDouble());
+                }
             }
 
             foreach (var toilet in toilets)
