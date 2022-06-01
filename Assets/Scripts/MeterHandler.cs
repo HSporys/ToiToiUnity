@@ -22,21 +22,28 @@ public class MeterHandler : MonoBehaviour
     {
         if (_initiated)
         {
-        }
-        var meterTransform = _freshWaterMeter;
-        _freshWaterMeter.localScale = new Vector3(meterTransform.localScale.x, _toilet.FreshWater/ _toilet.FreshWaterMax *2,1);
-        meterTransform = _wasteMeter1;
-        _wasteMeter1.localScale = new Vector3(meterTransform.localScale.x, _toilet.WasteWater1/ _toilet.WasteWater1Max *2,1);
-        meterTransform = _wasteMeter2;
-        _wasteMeter2.localScale = new Vector3(meterTransform.localScale.x, _toilet.WasteWater2/ _toilet.WasteWater2Max *2,1);
+            var meterTransform = _freshWaterMeter;
+            _freshWaterMeter.localScale = new Vector3(meterTransform.localScale.x,
+                _toilet.FreshWater / _toilet.FreshWaterMax * 2, 1);
+            meterTransform = _wasteMeter1;
+            _wasteMeter1.localScale = new Vector3(meterTransform.localScale.x,
+                _toilet.WasteWater1 / _toilet.WasteWater1Max * 2, 1);
+            meterTransform = _wasteMeter2;
+            _wasteMeter2.localScale = new Vector3(meterTransform.localScale.x,
+                _toilet.WasteWater2 / _toilet.WasteWater2Max * 2, 1);
 
-        if (_toilet.IsAvailable())
-        {
-            _occupiedLamp.color = Color.green;
-        }
-        else
-        {
-            _occupiedLamp.color = Color.red;
+            if (_toilet.IsFull())
+            {
+                _occupiedLamp.color = Color.yellow;
+            }
+            else if (_toilet.IsAvailable())
+            {
+                _occupiedLamp.color = Color.green;
+            }
+            else
+            {
+                _occupiedLamp.color = Color.red;
+            }
         }
     }
 
@@ -48,6 +55,7 @@ public class MeterHandler : MonoBehaviour
         _freshWaterMeter = gameObject.transform.Find("FreshWaterMeter");
         _wasteMeter1 = gameObject.transform.Find("WasteMeter1");
         _wasteMeter2 = gameObject.transform.Find("WasteMeter2");
-        _occupiedLamp = gameObject.transform.Find("OccupiedLamp").gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        _occupiedLamp =
+            gameObject.transform.Find("OccupiedLamp").gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
     }
 }

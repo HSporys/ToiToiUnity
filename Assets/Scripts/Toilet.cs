@@ -34,15 +34,11 @@ public class Toilet
         return OccupiedFor <= 0.0f && !IsFull();
     }
 
-    public void Tick(float delta)
-    {
-    }
 
     public bool IsFull()
     {
         bool full =  FreshWater < FreshWaterTreshhold * FreshWaterMax || WasteWater1 > WasteWaterTreshhold * WasteWater1Max ||
                WasteWater2 > WasteWaterTreshhold * WasteWater2Max;
-        if(full) Debug.Log("FULL" + FreshWater + " " + WasteWater1 + " " + WasteWater2);
         return full;
     }
 
