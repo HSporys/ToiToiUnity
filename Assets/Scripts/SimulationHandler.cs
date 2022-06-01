@@ -9,7 +9,7 @@ namespace Assets.Scripts
     public class SimulationHandler
     {
         private const float ToiletBaseDuration = .5f;
-        private const float PersonsPerSecond = 10f;
+        private const float PersonsPerSecond = 20f;
         private const float FreshWaterUsageBase = 2;
         private const float WasteWater1UsageBase = 1.9f;
         private const float WasteWater2UsageBase = 2.1f;
@@ -18,6 +18,7 @@ namespace Assets.Scripts
         private const float XAreaMax = 35;
         private const float YAreaMax = 20;
         private static Random rng = new Random();
+        private static float MaintinenceTimer = -1;
 
         public static void SimultationStep(List<Toilet> toilets, float dt)
         {
@@ -44,13 +45,29 @@ namespace Assets.Scripts
                 count_time -= 1;
             }
 
+            if (MaintinenceTimer > 0)
+            {
+                MaintinenceTimer -= dt;
+                if (MaintinenceTimer <= 0)
+                {
+                    foreach (var toilet in toilets)
+                    {
+                        // empty full toilets 
+                        if (toilet.IsFull())
+                        {
+                            toilet.Empty();
+                        }
+                    }
+                }
+            } 
             
             foreach (var toilet in toilets)
             {
-                // empty full toilets 
+                // request service for full toilets 
                 if (toilet.IsFull())
                 {
-                    toilet.Empty();
+                    if(MaintinenceTimer <= 0)
+                        MaintinenceTimer = 20;
                 } 
                 // update OccupiedFor
                 if (!(toilet.OccupiedFor > 0)) continue;
