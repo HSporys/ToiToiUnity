@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using Random = System.Random;
+using Vector2 = System.Numerics.Vector2;
 
 namespace Assets.Scripts
 {
@@ -19,6 +20,7 @@ namespace Assets.Scripts
 
         public static void SimultationStep(List<Toilet> toilets, float dt)
         {
+            Debug.Log(toilets.Count);
             if (toilets.Count == 0) return;
             // new persons based on time
             while (new Random().NextDouble() < dt * PersonsPerSecond)

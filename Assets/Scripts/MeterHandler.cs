@@ -10,6 +10,7 @@ public class MeterHandler : MonoBehaviour
     private SpriteRenderer _occupiedLamp;
 
     private Toilet _toilet;
+    private bool _initiated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,9 @@ public class MeterHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_initiated)
+        {
+        }
         var meterTransform = _freshWaterMeter;
         _freshWaterMeter.localScale = new Vector3(meterTransform.localScale.x, _toilet.FreshWater/ _toilet.FreshWaterMax *2,1);
         meterTransform = _wasteMeter1;
@@ -38,14 +42,12 @@ public class MeterHandler : MonoBehaviour
 
     public void Init(Toilet toilet)
     {
+        _initiated = true;
         _toilet = toilet;
 
         _freshWaterMeter = gameObject.transform.Find("FreshWaterMeter");
         _wasteMeter1 = gameObject.transform.Find("WasteMeter1");
         _wasteMeter2 = gameObject.transform.Find("WasteMeter2");
         _occupiedLamp = gameObject.transform.Find("OccupiedLamp").gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-
-        Debug.Log(_freshWaterMeter);
-        Debug.Log("start");
     }
 }

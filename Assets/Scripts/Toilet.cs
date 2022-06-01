@@ -32,9 +32,6 @@ public class Toilet
 
     public void Tick(float delta)
     {
-
-
-        //Debug.Log(FreshWater);
     }
 
     public bool IsFull()

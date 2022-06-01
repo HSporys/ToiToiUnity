@@ -11,7 +11,6 @@ public class FreshWaterMeter : MonoBehaviour
     void Start()
     {
         var parent = GetComponentInParent(typeof(ToiletBehaviour)) as ToiletBehaviour;
-        Debug.Log(parent);
         if (parent != null) _toilet = parent.Toilet;
     }
 

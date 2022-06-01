@@ -18,7 +18,6 @@ public class ToiletHandler : MonoBehaviour
             if (component != null)
             {
                 component.Init();
-                Debug.Log(component);
                 if (component != null) _toiletList.Add(component.Toilet);
             }
         }
@@ -28,12 +27,9 @@ public class ToiletHandler : MonoBehaviour
     void Update()
     {
         SimulationHandler.SimultationStep(_toiletList, Time.deltaTime);
-        foreach (var toilet in _toiletList)
-        {
-            Debug.Log(toilet.FreshWater);
-            Debug.Log(toilet.WasteWater1);
-            Debug.Log(toilet.WasteWater2);
 
-        }
+        Camera cam = Camera.main;
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
     }
 }
