@@ -28,7 +28,7 @@ namespace Assets.Scripts
 
                 if (bestT != null)
                 {
-                    bestT.OccupiedFor = (float)(100 * rng.NextDouble());
+                    bestT.OccupiedFor = (float)(rng.NextDouble());
                 }
             }
 

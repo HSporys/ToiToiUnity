@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Security.Cryptography;
+using UnityEngine;
+using Vector2 = System.Numerics.Vector2;
 
 public class Toilet
 {
@@ -33,7 +34,7 @@ public class Toilet
     {
         if (!IsFree())
         {
-            OccupiedFor = OccupiedFor - delta;
+            OccupiedFor -= delta;
             if (OccupiedFor <= 0)
             {
                 OccupiedFor = 0;
@@ -43,19 +44,23 @@ public class Toilet
             }
 
         }
+
+        //Debug.Log(FreshWater);
     }
 
     public bool IsFull()
     {
-        return FreshWater < 0.1 * FreshWaterMax || WasteWater1 > 0.9 * WasteWater1Max ||
+        bool full =  FreshWater < 0.1 * FreshWaterMax || WasteWater1 > 0.9 * WasteWater1Max ||
                WasteWater2 > 0.9 * WasteWater2Max;
+        //if(full) Debug.Log("FULL" + FreshWater + " " + WasteWater1 + " " + WasteWater2);
+        return full;
     }
 
     public void Empty()
     {
         FreshWater = FreshWaterMax;
-        WasteWater1 = WasteWater1Max;
-        WasteWater2 = WasteWater2Max;
+        WasteWater1 = 0;
+        WasteWater2 = 0;
     }
 }
 
