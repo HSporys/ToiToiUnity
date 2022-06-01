@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Security.Cryptography;
 
 public class Toilet
 {
@@ -30,7 +31,18 @@ public class Toilet
 
     public void Tick(float delta)
     {
-        OccupiedFor = OccupiedFor - delta > 0 ? OccupiedFor - delta : 0;
+        if (!IsFree())
+        {
+            OccupiedFor = OccupiedFor - delta;
+            if (OccupiedFor <= 0)
+            {
+                OccupiedFor = 0;
+                FreshWater -= 10;
+                WasteWater1 += 10;
+                WasteWater2 += 10;
+            }
+
+        }
     }
 
     public bool IsFull()
