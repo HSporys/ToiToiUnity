@@ -26,7 +26,6 @@ public class SpawnAreaHandler : MonoBehaviour
             {
                 var spawnArea =  gameObject.GetComponent(typeof(SpawnAreaHandler)) as SpawnAreaHandler;
                 component.Init(spawnArea);
-                if (component != null) SpawnAreaList.Add(component.SpawnArea);
             }
         }
         
