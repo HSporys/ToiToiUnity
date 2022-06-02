@@ -59,7 +59,7 @@ namespace Assets.Scripts
             return prod;
         }
         
-        public static void SimultationStep(List<Toilet> toilets, float dt)
+        public static void SimultationStep(List<Toilet> toilets, List<SpawnArea> spawnAreaList, float dt)
         {
             foreach (var toilet in toilets)
             {

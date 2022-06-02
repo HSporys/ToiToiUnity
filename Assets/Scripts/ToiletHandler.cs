@@ -8,7 +8,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class ToiletHandler : MonoBehaviour
 {
-    private List<Toilet> _toiletList = new();
+    public List<Toilet> ToiletList = new();
     private Vector3 _selectionStart;
     private Vector3 _selectionEnd;
     private bool _selecting = false;
@@ -17,6 +17,9 @@ public class ToiletHandler : MonoBehaviour
     private bool _shiftingSelection = false;
     private Vector3 _shiftStart = Vector3.zero;
     private List<GameObject> _shiftingToilets = new();
+    private List<SpawnArea> _spawnAreas = new();
+
+    private bool _initiated;
 
     [SerializeField] public GameObject selectionPrefab;
 
@@ -32,19 +35,11 @@ public class ToiletHandler : MonoBehaviour
             {
                 var toiletHandler =  gameObject.GetComponent(typeof(ToiletHandler)) as ToiletHandler;
                 component.Init(toiletHandler);
-                if (component != null) _toiletList.Add(component.Toilet);
+                if (component != null) ToiletList.Add(component.Toilet);
             }
         }
-    }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        SimulationHandler.SimultationStep(_toiletList, Time.deltaTime);
-
-        Camera cam = Camera.main;
-        float height = 2f * cam.orthographicSize;
-        float width = height * cam.aspect;
+        _initiated = true;
     }
 
     private void Update()
@@ -52,11 +47,16 @@ public class ToiletHandler : MonoBehaviour
         SelectToilets();
     }
 
+    public bool IsInitiated()
+    {
+        return _initiated;
+    }
+
     public void AddToilet(ToiletBehaviour toilet)
     {
         var toiletHandler =  gameObject.GetComponent(typeof(ToiletHandler)) as ToiletHandler;
         toilet.Init(toiletHandler);
-        _toiletList.Add(toilet.Toilet);
+        ToiletList.Add(toilet.Toilet);
     }
 
     void SelectToilets()
@@ -159,6 +159,6 @@ public class ToiletHandler : MonoBehaviour
 
     public void RemoveToilet(Toilet toilet)
     {
-        _toiletList.Remove(toilet);
+        ToiletList.Remove(toilet);
     }
 }
