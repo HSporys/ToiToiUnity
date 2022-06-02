@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using MouseButton = Unity.VisualScripting.MouseButton;
 using Vector2 = System.Numerics.Vector2;
 
 public class ToiletBehaviour : MonoBehaviour
@@ -33,6 +34,11 @@ public class ToiletBehaviour : MonoBehaviour
             Toilet.coordinates.X = position.x;
             Toilet.coordinates.Y = position.y;
         }
+
+        Toilet.Tick(Time.deltaTime);
+        
+        var textField = transform.GetComponentInChildren(typeof(TMPro.TextMeshProUGUI)) as TMPro.TextMeshProUGUI;
+        textField.text = String.Format("{0:F0}", Toilet.GetOccudiedPercent());
     }
 
     public void Init(ToiletHandler toiletHandler)

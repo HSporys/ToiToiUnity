@@ -160,6 +160,5 @@ public class ToiletHandler : MonoBehaviour
     public void RemoveToilet(Toilet toilet)
     {
         _toiletList.Remove(toilet);
-        Debug.Log(_toiletList.Count);
     }
 }

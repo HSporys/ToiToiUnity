@@ -49,7 +49,6 @@ public class MeterHandler : MonoBehaviour
 
     public void Init(Toilet toilet)
     {
-        _initiated = true;
         _toilet = toilet;
 
         _freshWaterMeter = gameObject.transform.Find("FreshWaterMeter");
@@ -57,5 +56,6 @@ public class MeterHandler : MonoBehaviour
         _wasteMeter2 = gameObject.transform.Find("WasteMeter2");
         _occupiedLamp =
             gameObject.transform.Find("OccupiedLamp").gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        _initiated = true;
     }
 }

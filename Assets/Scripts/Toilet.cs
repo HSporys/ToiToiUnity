@@ -15,6 +15,8 @@ public class Toilet
     public float WasteWater1;
     public float WasteWater2;
     public float OccupiedFor;
+    public float TimeOccupied;
+    public float TimeUnoccupied;
     public readonly float FreshWaterMax;
     public readonly float WasteWater1Max;
     public readonly float WasteWater2Max;
@@ -47,6 +49,26 @@ public class Toilet
         FreshWater = FreshWaterMax;
         WasteWater1 = 0;
         WasteWater2 = 0;
+    }
+
+    public void Tick(float dt)
+    {
+        if (!IsFull())
+        {
+            if (IsAvailable())
+            {
+                TimeUnoccupied += dt;
+            }
+            else
+            {
+                TimeOccupied += dt;
+            }
+        }
+    }
+
+    public float GetOccudiedPercent()
+    {
+        return TimeOccupied * 100 / (TimeOccupied + TimeUnoccupied + 0.000001f);
     }
 }
 
