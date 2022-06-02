@@ -45,6 +45,7 @@ public class ToiletHandler : MonoBehaviour
     private void Update()
     {
         SelectToilets();
+        ResetToilets();
     }
 
     public bool IsInitiated()
@@ -155,6 +156,31 @@ public class ToiletHandler : MonoBehaviour
         var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         position.z = -1;
         return position;
+    }
+
+    private void ResetToilets()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _initiated = false;
+
+            ToiletList = new List<Toilet>();
+        
+            Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
+            foreach (var child in transforms)
+            {
+                var component = child.gameObject.GetComponent(typeof(ToiletBehaviour)) as ToiletBehaviour;
+
+                if (component != null)
+                {
+                    var toiletHandler =  gameObject.GetComponent(typeof(ToiletHandler)) as ToiletHandler;
+                    component.Init(toiletHandler);
+                    if (component != null) ToiletList.Add(component.Toilet);
+                }
+            }
+
+            _initiated = true;
+        }
     }
 
     public void RemoveToilet(Toilet toilet)

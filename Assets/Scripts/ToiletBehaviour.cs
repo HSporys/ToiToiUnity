@@ -48,11 +48,6 @@ public class ToiletBehaviour : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown((int)MouseButton.Left))
-        {
-            _attachedToMouse = true;
-        }
-
         if (Input.GetMouseButtonDown((int)MouseButton.Right))
         {
             Destroy(gameObject);
