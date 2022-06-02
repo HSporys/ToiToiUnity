@@ -17,6 +17,19 @@ public class SpawnAreaHandler : MonoBehaviour
 
     private void Awake()
     {
+        Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
+        foreach (var child in transforms)
+        {
+            var component = child.gameObject.GetComponent(typeof(SpawnAreaBehaviour)) as SpawnAreaBehaviour;
+
+            if (component != null)
+            {
+                var spawnArea =  gameObject.GetComponent(typeof(SpawnAreaHandler)) as SpawnAreaHandler;
+                component.Init(spawnArea);
+                if (component != null) SpawnAreaList.Add(component.SpawnArea);
+            }
+        }
+        
         _initiated = true;
     }
 
