@@ -57,7 +57,7 @@ public class SpawnAreaHandler : MonoBehaviour
             _spawning = true;
         }
 
-        if (Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.D) && _spawning)
         {
             _spawning = false;
             var spawnComponent = _spawnArea.GetComponent(typeof(SpawnAreaBehaviour)) as SpawnAreaBehaviour;
