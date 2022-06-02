@@ -33,7 +33,7 @@ public class SpawnAreaBehaviour : MonoBehaviour
     
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown((int)MouseButton.Right))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             Destroy(gameObject);
         }
