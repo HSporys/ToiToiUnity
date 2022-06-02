@@ -30,7 +30,8 @@ public class ToiletHandler : MonoBehaviour
 
             if (component != null)
             {
-                component.Init();
+                var toiletHandler =  gameObject.GetComponent(typeof(ToiletHandler)) as ToiletHandler;
+                component.Init(toiletHandler);
                 if (component != null) _toiletList.Add(component.Toilet);
             }
         }
@@ -53,13 +54,13 @@ public class ToiletHandler : MonoBehaviour
 
     public void AddToilet(ToiletBehaviour toilet)
     {
-        toilet.Init();
+        var toiletHandler =  gameObject.GetComponent(typeof(ToiletHandler)) as ToiletHandler;
+        toilet.Init(toiletHandler);
         _toiletList.Add(toilet.Toilet);
     }
 
     void SelectToilets()
     {
-        
         //select area
         Vector3 selectionDistance;
         if (Input.GetKeyDown(KeyCode.Mouse0) && !_selected)
@@ -154,5 +155,11 @@ public class ToiletHandler : MonoBehaviour
         var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         position.z = -1;
         return position;
+    }
+
+    public void RemoveToilet(Toilet toilet)
+    {
+        _toiletList.Remove(toilet);
+        Debug.Log(_toiletList.Count);
     }
 }

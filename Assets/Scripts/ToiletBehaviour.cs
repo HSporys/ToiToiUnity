@@ -9,6 +9,7 @@ using Vector2 = System.Numerics.Vector2;
 public class ToiletBehaviour : MonoBehaviour
 {
     public Toilet Toilet;
+    private ToiletHandler _toiletHandler;
 
     private bool _attachedToMouse = false;
     // Start is called before the first frame update
@@ -34,8 +35,9 @@ public class ToiletBehaviour : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(ToiletHandler toiletHandler)
     {
+        _toiletHandler = toiletHandler;
         var position = gameObject.transform.position;
         Toilet = new Toilet(position.x,position.y);
         var meterHandler = GetComponentInChildren(typeof(MeterHandler)) as MeterHandler;
@@ -48,5 +50,15 @@ public class ToiletBehaviour : MonoBehaviour
         {
             _attachedToMouse = true;
         }
+
+        if (Input.GetMouseButtonDown((int)MouseButton.Right))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _toiletHandler.RemoveToilet(Toilet);
     }
 }
