@@ -36,6 +36,16 @@ public class BehaviourOverseer : MonoBehaviour
             {
                 serviceStatusText.text = "";
             }
+            
+            var aiStatus = GameObject.Find("AiStatus");
+            var aiStatusText = aiStatus.transform.GetComponentInChildren(typeof(TMPro.TextMeshProUGUI)) as TMPro.TextMeshProUGUI;
+
+            aiStatusText.text = String.Format("Maintenance mode: {0:F0}", (int)SimulationHandler.maintenanceMode);
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                SimulationHandler.ToggleMaintenanceMode();
+            }
 
         }
     }

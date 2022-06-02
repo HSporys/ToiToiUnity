@@ -20,19 +20,28 @@ namespace Assets.Scripts
         private const float FreshWaterUsageBase = 2;
         private const float WasteWater1UsageBase = 1.9f;
         private const float WasteWater2UsageBase = 2.1f;
-        private const float XAreaMin = -35;
-        private const float YAreaMin = -20;
-        private const float XAreaMax = 35;
-        private const float YAreaMax = 20;
-        private const float ServiceCallDelay = 20;
+        private const float ServiceCallDelay = 30;
         private static Random rng = new Random();
         public static float MaintinenceTimer = -1;
         public static int QueueCount = 0;
 
-        private static MaintenanceMode maintenanceMode = MaintenanceMode.PredictiveCall;
+        public static MaintenanceMode maintenanceMode = MaintenanceMode.PredictiveCall;
 
 
-        private static int PoissonRNG(float rate)
+        public static void ToggleMaintenanceMode()
+        {
+            if (maintenanceMode == MaintenanceMode.PredictiveCall)
+            {
+                maintenanceMode = MaintenanceMode.CallOnFull;
+            }
+            else
+            {
+                maintenanceMode = MaintenanceMode.PredictiveCall;
+            }
+        }
+
+
+            private static int PoissonRNG(float rate)
         {
             var rand = rng.NextDouble();
             int count = 0;
@@ -156,7 +165,7 @@ namespace Assets.Scripts
                     foreach (var toilet in toilets)
                     {
                         // empty full toilets 
-                        if (toilet.IsFull())
+                        if (toilet.IsFull() || toilet.IsAlmostFull())
                         {
                             toilet.Empty();
                         }

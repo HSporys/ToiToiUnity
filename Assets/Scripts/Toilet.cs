@@ -9,6 +9,8 @@ public class Toilet
     
     public const float FreshWaterTreshhold = 0.05f;
     public const float WasteWaterTreshhold = 0.9f;
+    public const float FreshWaterTreshhold2 = 0.4f;
+    public const float WasteWaterTreshhold2 = 0.6f;
     
     public Vector2 coordinates;
     public float FreshWater;
@@ -41,6 +43,13 @@ public class Toilet
     {
         bool full =  FreshWater < FreshWaterTreshhold * FreshWaterMax || WasteWater1 > WasteWaterTreshhold * WasteWater1Max ||
                WasteWater2 > WasteWaterTreshhold * WasteWater2Max;
+        return full;
+    }
+    
+    public bool IsAlmostFull()
+    {
+        bool full =  FreshWater < FreshWaterTreshhold2 * FreshWaterMax || WasteWater1 > WasteWaterTreshhold2 * WasteWater1Max ||
+                     WasteWater2 > WasteWaterTreshhold2 * WasteWater2Max;
         return full;
     }
 
