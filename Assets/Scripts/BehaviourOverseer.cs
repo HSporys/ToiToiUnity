@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class BehaviourOverseer : MonoBehaviour
 {
@@ -13,6 +15,29 @@ public class BehaviourOverseer : MonoBehaviour
     {
         _toiletHandler = transform.GetComponentInChildren(typeof(ToiletHandler)) as ToiletHandler;
         _spawnAreaHandler = transform.GetComponentInChildren(typeof(SpawnAreaHandler)) as SpawnAreaHandler;
+    }
+
+    private void Update()
+    {
+        if (_toiletHandler.IsInitiated() && _spawnAreaHandler.IsInitiated())
+        {
+            var queue = GameObject.Find("Queue");
+            var queueText = queue.transform.GetComponentInChildren(typeof(TMPro.TextMeshProUGUI)) as TMPro.TextMeshProUGUI;
+            queueText.text = String.Format("Queue: {0:F0}", SimulationHandler.QueueCount);
+
+            
+            var serviceStatus = GameObject.Find("ServiceStatus");
+            var serviceStatusText = serviceStatus.transform.GetComponentInChildren(typeof(TMPro.TextMeshProUGUI)) as TMPro.TextMeshProUGUI;
+            if (SimulationHandler.MaintinenceTimer >= 0)
+            {
+                serviceStatusText.text = String.Format("Maintenance in {0:F0}", SimulationHandler.MaintinenceTimer);
+            }
+            else
+            {
+                serviceStatusText.text = "";
+            }
+
+        }
     }
 
     // Update is called once per frame

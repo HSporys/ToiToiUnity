@@ -26,8 +26,8 @@ namespace Assets.Scripts
         private const float YAreaMax = 20;
         private const float ServiceCallDelay = 20;
         private static Random rng = new Random();
-        private static float MaintinenceTimer = -1;
-        private static int QueueCount = 0;
+        public static float MaintinenceTimer = -1;
+        public static int QueueCount = 0;
 
         private static MaintenanceMode maintenanceMode = MaintenanceMode.PredictiveCall;
 
