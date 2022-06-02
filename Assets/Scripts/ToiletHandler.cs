@@ -59,27 +59,29 @@ public class ToiletHandler : MonoBehaviour
 
     void SelectToilets()
     {
+        
+        //select area
         Vector3 selectionDistance;
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !_selected)
         {
             _selectionStart = CurrentPosition();
             _selectionArea = Instantiate(selectionPrefab, _selectionStart, Quaternion.identity);
             selectionDistance = CurrentPosition() - _selectionStart;
             _selectionArea.transform.localScale = selectionDistance;
-            _selectionArea.transform.position += selectionDistance*0.5f;
+            _selectionArea.transform.position += selectionDistance * 0.5f;
             _selecting = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && _selected)
         {
-            if (IsInsideArea(_selectionStart,_selectionEnd,CurrentPosition()))
+            if (IsInsideArea(_selectionStart, _selectionEnd, CurrentPosition()))
             {
                 _shiftingSelection = true;
                 _shiftStart = CurrentPosition();
 
                 foreach (Transform child in transform)
                 {
-                    if (IsInsideArea(_selectionStart,_selectionEnd,child.transform.position))
+                    if (IsInsideArea(_selectionStart, _selectionEnd, child.transform.position))
                     {
                         _shiftingToilets.Add(child.gameObject);
                     }
@@ -105,7 +107,7 @@ public class ToiletHandler : MonoBehaviour
             _selectionArea.transform.localScale = Vector3.one;
             selectionDistance = CurrentPosition() - _selectionStart;
             _selectionArea.transform.localScale = selectionDistance;
-            _selectionArea.transform.position += selectionDistance*0.5f;
+            _selectionArea.transform.position += selectionDistance * 0.5f;
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
@@ -129,13 +131,15 @@ public class ToiletHandler : MonoBehaviour
 
     private bool IsInsideArea(Vector3 start, Vector3 end, Vector3 position)
     {
-        Vector3 min = Vector3.Min(start,end);
+        Vector3 min = Vector3.Min(start, end);
         Vector3 max = Vector3.Max(start, end);
 
-        if (position.x >max.x || position.y >max.y)
+        if (position.x > max.x || position.y > max.y)
         {
             return false;
-        } if (position.x < min.x || position.y < min.y)
+        }
+
+        if (position.x < min.x || position.y < min.y)
         {
             return false;
         }
