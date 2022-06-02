@@ -10,7 +10,7 @@ namespace Assets.Scripts
     public class SimulationHandler
     {
         private const float ToiletBaseDuration = 1f;
-        private const float PersonsPerSecond = 20f;
+        private const float PersonsPerSecondPerArea = 20f / 1000f;
         private const float FreshWaterUsageBase = 2;
         private const float WasteWater1UsageBase = 1.9f;
         private const float WasteWater2UsageBase = 2.1f;
@@ -48,18 +48,8 @@ namespace Assets.Scripts
             }
             return (float)Math.Exp(-lambda) *  sum;
         }
-
-        private static int Faculty(int k)
-        {
-            int prod = 1;
-            for (int i = k; i > 1; i--)
-            {
-                prod *= i;
-            }
-            return prod;
-        }
         
-        public static void SimultationStep(List<Toilet> toilets, List<SpawnArea> spawnAreaList, float dt)
+        public static void SimultationStep(List<Toilet> toilets, List<SpawnArea> spawnAreas, float dt)
         {
             foreach (var toilet in toilets)
             {
@@ -81,31 +71,33 @@ namespace Assets.Scripts
             }
             // new persons based on time
             Toilet bestT;
-            QueueCount = 0;
-            int newCount = PoissonRNG(dt * PersonsPerSecond) + QueueCount;
-            for(int i = 0; i < newCount; i++)
+            foreach (var spawnArea in spawnAreas)
             {
-                bestT = null;
-                var pos = new Vector2((float)rng.NextDouble() * (XAreaMax- XAreaMin) + XAreaMin, (float)rng.NextDouble() * (YAreaMax- YAreaMin) + YAreaMin);
-                var bestV = float.PositiveInfinity;
-                foreach (var toilet in toilets.Where(toilet => Vector2.Distance(pos, toilet.coordinates) < bestV && toilet.IsAvailable()))
+                int newCount = PoissonRNG(dt * PersonsPerSecondPerArea * spawnArea.Size()) + QueueCount;
+                QueueCount = 0;
+                for(int i = 0; i < newCount; i++)
                 {
-                    bestV = Vector2.Distance(pos, toilet.coordinates);
-                    bestT = toilet;
-                }
+                    bestT = null;
+                    var pos = new Vector2((float)rng.NextDouble() * (spawnArea.EndPoint.X - spawnArea.StartPoint.X) + spawnArea.StartPoint.X, (float)rng.NextDouble() * (spawnArea.EndPoint.Y - spawnArea.StartPoint.Y) + spawnArea.StartPoint.Y);
+                    var bestV = float.PositiveInfinity;
+                    foreach (var toilet in toilets.Where(toilet => Vector2.Distance(pos, toilet.coordinates) < bestV && toilet.IsAvailable()))
+                    {
+                        bestV = Vector2.Distance(pos, toilet.coordinates);
+                        bestT = toilet;
+                    }
 
-                if (bestT != null)
-                {
-                    bestT.OccupiedFor = (float)(ToiletBaseDuration * rng.NextDouble());
+                    if (bestT != null)
+                    {
+                        bestT.OccupiedFor = (float)(ToiletBaseDuration * rng.NextDouble());
+                    }
+                    else
+                    {
+                        QueueCount++;
+                    }
                 }
-                else
-                {
-                    QueueCount++;
-                }
+                Debug.Log("Queue: " + QueueCount);   
             }
-            if (QueueCount > 0) {
-                Debug.Log(QueueCount);
-            }
+            
 
             if (MaintinenceTimer > 0)
             {
