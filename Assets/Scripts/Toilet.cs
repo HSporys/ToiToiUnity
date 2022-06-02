@@ -7,8 +7,8 @@ using Vector2 = System.Numerics.Vector2;
 public class Toilet
 {
     
-    private const float FreshWaterTreshhold = 0.05f;
-    private const float WasteWaterTreshhold = 0.9f;
+    public const float FreshWaterTreshhold = 0.05f;
+    public const float WasteWaterTreshhold = 0.9f;
     
     public Vector2 coordinates;
     public float FreshWater;
